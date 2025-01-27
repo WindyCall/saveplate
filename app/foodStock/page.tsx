@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSession } from "next-auth/react";
 import { useGetFoodItemsQuery, useUpdateFoodItemMutation } from '../../lib/features/fetchFoodItems/fetchFoodItemsApiSlice';
+import Link from 'next/link';
 
 const FoodStockPage: React.FC = () => {
     const { data: session } = useSession();
@@ -11,6 +12,10 @@ const FoodStockPage: React.FC = () => {
 
     const [updatedFood, setUpdatedFood] = useState<{ [key: string]: { price: string, number: string } }>({});
     const [selectedFood, setSelectedFood] = useState<{ name: string, price: string, number: string } | null>(null);
+
+    useEffect(() => {
+        refetch();
+    }, [refetch]);
 
     useEffect(() => {
         if (foodSold.length > 0) {
@@ -57,10 +62,13 @@ const FoodStockPage: React.FC = () => {
 
     return (
         <div className="flex flex-col items-center bg-gray-100 p-4 min-h-screen">
+            <Link href="/" className="self-start mb-4 text-blue-500 hover:underline text-xl font-semibold">
+                &larr; Back to Main Page
+            </Link>
             <h1 className="text-4xl font-bold mb-8">Food Stock</h1>
             <ul className="w-full max-w-lg bg-white p-8 rounded-lg shadow-md">
                 {foodSold.map(food => (
-                    <li key={food.name} className="mb-4 flex items-center justify-between">
+                    <li key={food.name} className="mb-4 flex items-center justify-between border border-gray-300 p-4 rounded-lg">
                         <div className="flex flex-col">
                             <span className="text-xl font-semibold">{food.name}</span>
                             <span className="text-lg">Price: ${food.price}</span>

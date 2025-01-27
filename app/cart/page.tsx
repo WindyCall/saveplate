@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import { useGetOrderQuery } from '../../lib/features/createOrder/createOrderApiSlice';
 import { useSession } from "next-auth/react";
+import Link from 'next/link';
 
 const CartPage: React.FC = () => {
     const { data: session } = useSession();
@@ -17,6 +18,9 @@ const CartPage: React.FC = () => {
 
     return (
         <div className="flex flex-col items-center bg-gray-100 p-4 min-h-screen">
+            <Link href="/" className="self-start mb-4 text-blue-500 hover:underline text-xl font-semibold">
+                &larr; Back to Main Page
+            </Link>
             <h1 className="text-4xl font-bold mb-8">Your Orders</h1>
             {orders && orders.length > 0 ? (
             <ul className="w-full max-w-lg bg-white p-8 rounded-lg shadow-md">
