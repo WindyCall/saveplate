@@ -56,10 +56,10 @@ export default function Header() {
             {dropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg">
                 <Link
-                  href="/foodSold"
+                  href="/foodStock"
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                 >
-                  Food sold
+                  Food Stock
                 </Link>
                 <Link
                   href="/foodBought"

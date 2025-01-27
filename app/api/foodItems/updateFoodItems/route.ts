@@ -16,30 +16,41 @@ export async function POST(request: NextRequest) {
     //
     const prisma = new PrismaClient();
 
-    // console.log(name, providerEmail, price, imageUrl, number, description, location);
+    console.log(name, providerEmail, price, imageUrl, number, description, location);
   
     try {
-      await prisma.foodItem.upsert({
+      const item = await prisma.foodItem.findMany({
         where: {
-            providerEmail_name: {
-                providerEmail: providerEmail,
-                name
-            }
-        },
-        update: {
-            price,
-            number
-        },
-        create: {
+          providerEmail: providerEmail,
+          name: name
+        }
+      });
+      if (item.length === 0) { 
+        await prisma.foodItem.create({
+          data: {
             name,
+            providerEmail,
             price,
             imageUrl,
             number,
             description,
-            location,
-            providerEmail: providerEmail,
-        },
-      });
+            location
+          }
+        });
+      } else {
+        await prisma.foodItem.update({
+          where: {
+            providerEmail_name: {
+              providerEmail: providerEmail,
+              name
+            }
+          },
+          data: {
+            price,
+            number
+          }
+        });
+      }
   
       return NextResponse.json([], { status: 200 });
     } catch (error) {
