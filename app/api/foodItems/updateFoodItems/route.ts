@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 
 export async function POST(request: NextRequest) {
     const body = await request.json();
-    const { name, provider, price, imageUrl, number, description, location } = body;
+    const { name, providerEmail, price, imageUrl, number, description, location } = body;
   
     if (!name) {
       return NextResponse.json(
@@ -16,12 +16,15 @@ export async function POST(request: NextRequest) {
     //
     const prisma = new PrismaClient();
 
-    console.log(name, provider, price, imageUrl, number, description, location);
+    // console.log(name, providerEmail, price, imageUrl, number, description, location);
   
     try {
       await prisma.foodItem.upsert({
         where: {
-            name,
+            providerEmail_name: {
+                providerEmail: providerEmail,
+                name
+            }
         },
         update: {
             price,
@@ -34,7 +37,7 @@ export async function POST(request: NextRequest) {
             number,
             description,
             location,
-            providerEmail: provider,
+            providerEmail: providerEmail,
         },
       });
   

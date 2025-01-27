@@ -3,24 +3,13 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 interface FoodItem {
   name: string;
-  provider: string;
+  providerEmail: string;
   price?: number;
   imageUrl?: string;
   number?: number;
   description?: string;
   location?: string;
 }
-
-// interface UpdateFoodItemInputs {
-//   name: string;
-//   provider: string;
-//   price?: number;
-//   imageUrl?: string;
-//   number?: number;
-//   description?: string;
-//   location?: string;
-// }
-
 
 export const fetchFoodItemsApiSlice = createApi({
   reducerPath: 'foodItemsApi',

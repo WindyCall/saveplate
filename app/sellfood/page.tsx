@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useSession } from "next-auth/react";
 import { useUpdateFoodItemMutation } from '../../lib/features/fetchFoodItems/fetchFoodItemsApiSlice';
+import Link from 'next/link';
 
 const SellFoodPage: React.FC = () => {
     const { data: session } = useSession();
@@ -21,7 +22,7 @@ const SellFoodPage: React.FC = () => {
             try {
                 await updateFoodItem({
                     name: foodName,
-                    provider: session?.user?.email!,
+                    providerEmail: session?.user?.email!,
                     description,
                     price: parseFloat(price),
                     location,
@@ -43,7 +44,10 @@ const SellFoodPage: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+        <div className="flex flex-col items-center bg-gray-100 p-4 min-h-screen">
+            <Link href="/" className="self-start mb-4 text-blue-500 hover:underline text-xl font-semibold">
+                &larr; Back to Main Page
+            </Link>
             <h1 className="text-4xl font-bold mb-8">Sell Your Food</h1>
             <form onSubmit={handleSubmit} className="w-full max-w-lg bg-white p-8 rounded-lg shadow-md">
                 <div className="mb-4">
