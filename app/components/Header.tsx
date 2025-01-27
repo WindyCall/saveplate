@@ -62,10 +62,10 @@ export default function Header() {
                   Food Stock
                 </Link>
                 <Link
-                  href="/foodBought"
+                  href="/cart"
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                 >
-                  Food bought
+                  Cart
                 </Link>
                 <button
                   onClick={() => signOut({ callbackUrl: "/" })}

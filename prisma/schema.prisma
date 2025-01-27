@@ -42,6 +42,9 @@ model Order {
   id        Int     @id @default(autoincrement())
   userEmail    String
   foodId  Int
+  orderNumber Int
+  paymentMethod String
+  status   String
   
   user    User    @relation(fields: [userEmail], references: [email])
   foodItem  FoodItem @relation(fields: [foodId], references: [id])

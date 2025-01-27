@@ -2,11 +2,13 @@ import type { Action, ThunkAction } from "@reduxjs/toolkit";
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
 
 import { fetchFoodItemsApiSlice } from "./features/fetchFoodItems/fetchFoodItemsApiSlice";
+import { createOrderApiSlice } from "./features/createOrder/createOrderApiSlice";
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
 const combinedReducer = combineSlices(
   fetchFoodItemsApiSlice,
+  createOrderApiSlice
 );
 
 // Create rootReducer with reset functionality
@@ -34,7 +36,8 @@ export const makeStore = () => {
     middleware: (getDefaultMiddleware) => {
       // NOTE: should we start combining the middlewares that are similar in operation?
       return getDefaultMiddleware().concat(
-        fetchFoodItemsApiSlice.middleware
+        fetchFoodItemsApiSlice.middleware,
+        createOrderApiSlice.middleware
       );
     },
   });

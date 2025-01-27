@@ -6,7 +6,7 @@ import { useGetFoodItemsQuery, useUpdateFoodItemMutation } from '../../lib/featu
 
 const FoodStockPage: React.FC = () => {
     const { data: session } = useSession();
-    const { data: foodSold = [], error, isLoading } = useGetFoodItemsQuery(session?.user?.email!);
+    const { data: foodSold = [], error, isLoading, refetch } = useGetFoodItemsQuery(session?.user?.email!);
     const [updateFoodItem] = useUpdateFoodItemMutation();
 
     const [updatedFood, setUpdatedFood] = useState<{ [key: string]: { price: string, number: string } }>({});
@@ -44,6 +44,7 @@ const FoodStockPage: React.FC = () => {
                 }).unwrap();
                 alert("Food item updated successfully!");
                 setSelectedFood(null);
+                refetch(); // Refetch food items after successful update
             } catch (error) {
                 console.error("Failed to update food item:", error);
                 alert("Failed to update food item. Please try again.");
