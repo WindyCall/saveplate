@@ -27,6 +27,8 @@ export async function POST(request: NextRequest) {
             data: {
             userEmail,
             foodId: item.id,
+            foodName: item.name,
+            foodPrice: item.price,
             paymentMethod,
             status,
             orderNumber,

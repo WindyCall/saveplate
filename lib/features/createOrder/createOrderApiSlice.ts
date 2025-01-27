@@ -10,13 +10,22 @@ interface Order {
     orderNumber: number;
 }
 
+interface OrderReturn {
+  foodName: string;
+  foodPrice: number;
+  status: string;
+  paymentMethod: string;
+  orderNumber: number;
+  orderedAt: Date;
+}
+
 export const createOrderApiSlice = createApi({
   reducerPath: 'orderApi',
   baseQuery: fetchBaseQuery({ baseUrl: '/api/order' }),
   tagTypes: ['order'],
   endpoints: (build) => ({
-    getOrder: build.query<Order[], any>({
-      query: (email) => `/fetchOrders?email=${email}`,
+    getOrder: build.query<OrderReturn[], string>({
+      query: (userEmail) => `/fetchOrders?email=${userEmail}`,
     }),
     createOrder: build.mutation<any, Order>({
       query: (body) => ({
