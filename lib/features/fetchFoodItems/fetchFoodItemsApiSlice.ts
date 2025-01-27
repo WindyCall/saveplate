@@ -2,21 +2,42 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 interface FoodItem {
-  id: string;
   name: string;
-  price: number;
-  imageUrl: string;
+  provider: string;
+  price?: number;
+  imageUrl?: string;
+  number?: number;
+  description?: string;
+  location?: string;
 }
 
+// interface UpdateFoodItemInputs {
+//   name: string;
+//   provider: string;
+//   price?: number;
+//   imageUrl?: string;
+//   number?: number;
+//   description?: string;
+//   location?: string;
+// }
+
+
 export const fetchFoodItemsApiSlice = createApi({
-  reducerPath: 'fetchFoodItems',
-  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
-  tagTypes: ['fetchFoodItems'],
-  endpoints: (builder) => ({
-    getFoodItems: builder.query<FoodItem[], any>({
+  reducerPath: 'foodItemsApi',
+  baseQuery: fetchBaseQuery({ baseUrl: '/api/foodItems' }),
+  tagTypes: ['foodItems'],
+  endpoints: (build) => ({
+    getFoodItems: build.query<FoodItem[], any>({
       query: (email) => `/fetchFoodItems?email=${email}`,
+    }),
+    updateFoodItem: build.mutation<any, FoodItem>({
+      query: (body) => ({
+        url: `/updateFoodItems`,
+        method: "POST",
+        body
+      }),
     }),
   }),
 });
 
-export const { useGetFoodItemsQuery } = fetchFoodItemsApiSlice;
+export const { useGetFoodItemsQuery, useUpdateFoodItemMutation } = fetchFoodItemsApiSlice;

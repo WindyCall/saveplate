@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 export async function GET(request: NextRequest) {
     try {
         const foodItems = await prisma.foodItem.findMany();
-        // console.log(foodItems)
+        console.log(foodItems)
         
         return NextResponse.json(foodItems, { status: 200 });
     } catch (error) {

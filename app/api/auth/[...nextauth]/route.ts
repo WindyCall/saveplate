@@ -12,7 +12,19 @@ const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     signIn: async ({ user, account, profile }) => {
-      console.log(user.email)
+      // insert user into db
+      if (profile) {
+        const prisma = new PrismaClient();
+        await prisma.user.upsert({
+          where: { email: profile.email },
+          update: {},
+          create: {
+            email: profile.email!,
+            username: profile.name!,
+          },
+        });
+        console.log("User inserted into db");
+      }
 
       return true;
     },

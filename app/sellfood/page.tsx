@@ -1,17 +1,45 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useSession } from "next-auth/react";
+import { useUpdateFoodItemMutation } from '../../lib/features/fetchFoodItems/fetchFoodItemsApiSlice';
 
 const SellFoodPage: React.FC = () => {
+    const { data: session } = useSession();
     const [foodName, setFoodName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
     const [location, setLocation] = useState('');
+    const [imageUrl, setImageUrl] = useState('');
+    const [number, setNumber] = useState('');
+    const [updateFoodItem] = useUpdateFoodItemMutation();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Handle form submission logic here
-        console.log({ foodName, description, price, location });
+        const userConfirmed = window.confirm("Are you sure you want to add this food item?");
+        if (userConfirmed) {
+            try {
+                await updateFoodItem({
+                    name: foodName,
+                    provider: session?.user?.email!,
+                    description,
+                    price: parseFloat(price),
+                    location,
+                    imageUrl,
+                    number: parseInt(number, 10)
+                }).unwrap();
+                alert("Food item added successfully!");
+                setFoodName('');
+                setDescription('');
+                setPrice('');
+                setLocation('');
+                setImageUrl('');
+                setNumber('');
+            } catch (error) {
+                console.error("Failed to add food item:", error);
+                alert("Failed to add food item. Please try again.");
+            }
+        }
     };
 
     return (
@@ -57,6 +85,28 @@ const SellFoodPage: React.FC = () => {
                         id="location"
                         value={location}
                         onChange={(e) => setLocation(e.target.value)}
+                        required
+                        className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
+                <div className="mb-4">
+                    <label htmlFor="imageUrl" className="block text-gray-700 font-bold mb-2">Image URL:</label>
+                    <input
+                        type="text"
+                        id="imageUrl"
+                        value={imageUrl}
+                        onChange={(e) => setImageUrl(e.target.value)}
+                        required
+                        className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
+                <div className="mb-4">
+                    <label htmlFor="number" className="block text-gray-700 font-bold mb-2">Number of Items:</label>
+                    <input
+                        type="text"
+                        id="number"
+                        value={number}
+                        onChange={(e) => setNumber(e.target.value)}
                         required
                         className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
